@@ -1,0 +1,8 @@
+# =========================================================
+# Traefik Ingress Controller incl. Service Account 
+# =========================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+  namespace: traefik-namespace

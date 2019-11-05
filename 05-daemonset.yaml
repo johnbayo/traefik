@@ -1,0 +1,61 @@
+####################################################
+# Daemonset manifest
+####################################################
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    k8s-app: traefik-ingress-lb
+  name: traefik-ingress-controller
+  namespace: traefik-namespace
+spec:
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: traefik-ingress-lb
+        image: traefik:1.7-alpine
+        ports:
+        - containerPort: 30020
+          hostPort: 80
+          name: http
+        - containerPort: 30030
+          hostPort: 443
+          name: https
+        - containerPort: 30040
+          hostPort: 8080
+          name: admin
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /certs
+          name: certs-claim
+        args:
+        - "--api"
+        - "--kubernetes"
+        - "--defaultentrypoints=http,https"
+        - "--entrypoints=Name:http Address::80 Redirect.EntryPoint:https"
+        - "--entrypoints=Name:https Address::443 TLS"
+        - "--acme"
+        - "--acme.onhostrule"
+        - "--acme.entrypoint=https"
+        - "--acme.email=example@example.com"
+        - "--acme.storage=/certs/acme.json"
+        - "--acme.httpchallenge"
+        - "--acme.httpchallenge.entrypoint=http"
+        - "--insecureSkipVerify=true"
+      volumes:
+      - name: certs-claim
+        persistentVolumeClaim:
+          claimName: pvc-traefik-claim

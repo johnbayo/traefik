@@ -1,0 +1,10 @@
+########################################
+# Traefik namespace template
+#######################################
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: traefik-namespace
+  labels:
+    app.kubernetes.io/name: traefik-namespace
+    app.kubernetes.io/part-of: traefik-namespace

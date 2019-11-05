@@ -1,0 +1,17 @@
+# =========================================================
+# Traefik Ingress Controller incl. Traefik-Web-UI
+# =========================================================
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik-web-ui
+  namespace: traefik-namespace
+spec:
+  type: ClusterIP 
+  selector:
+    k8s-app: traefik-ingress-lb
+    tier: frontend
+  ports:
+  - name: https
+    port: 443

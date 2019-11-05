@@ -1,0 +1,23 @@
+# =========================================================
+# Traefik Ingress Controller incl. Traefik-Ingress-Controller
+# =========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-ingress-service
+  namespace: traefik-namespace
+spec:
+  type: NodePort 
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    protocol: TCP
+  - name: admin
+    port: 8080
+    protocol: TCP
+  selector:
+    k8s-app: traefik-ingress-lb

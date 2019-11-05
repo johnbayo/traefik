@@ -1,0 +1,15 @@
+# =========================================================
+# Traefik Ingress Controller incl. persistent volume claim manifest
+# =========================================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-traefik-claim
+  namespace: traefik-namespace
+spec:
+  storageClassName: "nfs-rw" 
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
