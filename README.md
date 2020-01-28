@@ -1,4 +1,4 @@
-# Traefik Version 1.7
+# Traefik
 This Manifest will deploy Traefik in a kubernetes cluster<br/>
 <br/>
 Requirements<br/>
